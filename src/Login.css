@@ -18,7 +18,6 @@
   }
   .login-form-heading {
     text-align: start;
-    font-size: 40px;
   }
   .login-input {
     padding: 0.6rem;
@@ -43,6 +42,11 @@
     transition: 0.5s;
     background-size: 200% auto;
     color: white;
+  }
+  .login-image {
+    width: 150px;
+    display: block;
+    margin: 1rem auto;
   }
   .login-signup-link {
     text-align: center;

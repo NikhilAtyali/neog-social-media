@@ -7,8 +7,17 @@ export const Signup = () =>{
     return (
         <>
         <div className="signup-container">
-        <Lottie animationData={signup} loop={true} />
+        <Lottie
+          className="signup-animation"
+          animationData={signup}
+          loop={true}
+        />
         <form className="signup-form">
+        <img
+            className="login-image"
+            src={require("./images/logo.png")}
+            alt="hangout logo"
+          />
           <h1 className="signup-form-heading">Sign up</h1>
           <input
             className="signup-form-input"

@@ -44,3 +44,17 @@
   .signup-show-password input {
     margin-right: 0.1rem;
   }
+  @media screen and (min-width: 768px) {
+    .signup-container {
+      flex-direction: row;
+      gap: 1rem;
+    }
+    .signup-animation {
+      width: 50%;
+    }
+    .signup-form {
+      width: 50%;
+      padding: 2rem;
+      justify-content: center;
+    }
+  }
