@@ -1,18 +1,34 @@
+import { Post } from "./component/Post"
+import "./Home.css";
 export const Home = () => {
-    console.log("Homemmmmmmmmmmmmmmmmm");
+   
   return (
     <>
-      <h1>Hello</h1>
-      <h1>Hello</h1>
-      <h1>Hello</h1>
-      <h1>Hello</h1>
-      <h1>Hello</h1>
-      <h1>Hello</h1>
-      <h1>Hello</h1>
-      <h1>Hello</h1>
-      <h1>Hello</h1>
-      <h1>Hello</h1>
-      <h1>Hello</h1>
+      <div className="home-container">
+        <ul>
+          <li>
+            <Post />
+          </li>
+          <li>
+            <Post />
+          </li>
+          <li>
+            <Post />
+          </li>
+          <li>
+            <Post />
+          </li>
+          <li>
+            <Post />
+          </li>
+          <li>
+            <Post />
+          </li>
+          <li>
+            <Post />
+          </li>
+        </ul>
+      </div>
     </>
   );
 };

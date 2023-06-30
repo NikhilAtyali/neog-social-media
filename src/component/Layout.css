@@ -1,0 +1,13 @@
+@media screen and (min-width: 768px) {
+    .outlet-container {
+      width: 50%;
+      margin-top: 8rem;
+      margin-left: 9rem;
+    }
+  }
+  @media screen and (min-width: 1024px) {
+    .outlet-container {
+      width: 50%;
+      margin: 8rem auto;
+    }
+  }
