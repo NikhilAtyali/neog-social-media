@@ -14,6 +14,7 @@
   }
   .post-username {
     font-weight: 600;
+    text-transform: capitalize;
   }
   .post-date {
     color: #777;
@@ -29,6 +30,9 @@
   .post-user-detail {
     display: flex;
     gap: 1rem;
+  }
+  .post-action-container svg {
+    cursor: pointer;
   }
   .post-action-container {
     display: flex;

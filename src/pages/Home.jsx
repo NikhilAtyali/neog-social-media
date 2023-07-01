@@ -1,32 +1,19 @@
+import { useContext } from "react";
 import { Post } from "../component/Post"
+import { PostContext } from "../context/PostContext";
 import "./Home.css";
 export const Home = () => {
+  const { userPosts } = useContext(PostContext);
    
   return (
     <>
       <div className="home-container">
         <ul>
-          <li>
-            <Post />
-          </li>
-          <li>
-            <Post />
-          </li>
-          <li>
-            <Post />
-          </li>
-          <li>
-            <Post />
-          </li>
-          <li>
-            <Post />
-          </li>
-          <li>
-            <Post />
-          </li>
-          <li>
-            <Post />
-          </li>
+        {userPosts?.map((post) => (
+            <li key={post._id}>
+              <Post postDetails={post} />
+            </li>
+          ))}
         </ul>
       </div>
     </>

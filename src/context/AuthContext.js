@@ -10,6 +10,11 @@ const authReducer = (prevState, { type, payload }) => {
         user: { ...payload.foundUser },
         token: payload.encodedToken,
       };
+    case "UPDATE_BOOKMARK":
+      return {
+        ...prevState,
+        user: { ...prevState.user, bookmarks: [...payload] },
+      };
     default:
       return prevState;
   }
@@ -21,7 +26,6 @@ export const AuthProvider = ({ children }) => {
     user: {},
     token: "",
   });
-
   const navigate = useNavigate();
 
   const loginHandler = async (e, username, password) => {
@@ -37,8 +41,8 @@ export const AuthProvider = ({ children }) => {
       });
       if (response.status === 200) {
         const responseData = await response.json();
+        localStorage.setItem("token", responseData.encodedToken);
         dispatch({ type: "LOGIN_USER", payload: responseData });
-        console.log(responseData);
         navigate("/home");
       }
     } catch (e) {
@@ -62,27 +66,58 @@ export const AuthProvider = ({ children }) => {
     return userData.isLoggedIn;
   };
 
-  // const getBookmarkPost = async () => {
-  //   const token = localStorage.getItem("token");
-  //   try {
-  //     const response = fetch("/api/users/bookmark/", {
-  //       method: "GET",
-  //       header: {
-  //         authorization: token,
-  //       },
-  //     });
-  //   } catch (e) {
-  //     console.error(e);
-  //   }
-  // };
+  const addBookmarkHandler = async (postId) => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await fetch(`/api/users/bookmark/${postId}`, {
+        method: "POST",
+        headers: {
+          authorization: token,
+        },
+      });
+      if (response.status === 200) {
+        const responseData = await response.json();
+        dispatch({
+          type: "UPDATE_BOOKMARK",
+          payload: responseData.bookmarks,
+        });
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const removeBookmarkHandler = async (postId) => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await fetch(`/api/users/remove-bookmark/${postId}`, {
+        method: "POST",
+        headers: {
+          authorization: token,
+        },
+      });
+      if (response.status === 200) {
+        const responseData = await response.json();
+        dispatch({ type: "UPDATE_BOOKMARK", payload: responseData.bookmarks });
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+  const toggleBookmark = (postId) => {
+    return userData.user.bookmarks.find((id) => id === postId)
+      ? removeBookmarkHandler(postId)
+      : addBookmarkHandler(postId);
+  };
 
   return (
     <AuthContext.Provider
       value={{
         userData,
-        username: userData.user.username,
+        loggedUsername: userData.user.username,
         loginHandler,
         signupHandler,
+        toggleBookmark,
         checkLogin,
       }}
     >
