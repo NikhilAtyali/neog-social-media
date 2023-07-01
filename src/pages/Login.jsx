@@ -1,17 +1,27 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Lottie from "lottie-react";
-import login from "./animation/login.json";
+import login from "../animation/login.json"
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 import "./Login.css";
 
 const Login = () => {
+  const { loginHandler } = useContext(AuthContext);
   return (
     <div className="login-container">
       <Lottie animationData={login} loop={true} className="login-animation" />;
-      <form className="login-form">
+      <form className="login-form"
+      onSubmit={(e) =>
+        loginHandler(
+          e,
+          e.target.elements.login_username.value,
+          e.target.elements.login_password.value
+        )
+      }>
         <img
           className="login-image"
-          src={require("./images/logo.png")}
+          src={require("../images/logo.png")}
           alt="hangout logo"
         />
         <h1 className="login-form-heading">Login</h1>
@@ -39,7 +49,10 @@ const Login = () => {
           <button className="login-btn" type="submit">
             Login
           </button>
-          <button className="login-btn" type="submit">
+          <button
+            className="login-btn"
+            onClick={(e) => loginHandler(e, "test", "123")}
+          >
             Login using test credentials
           </button>
           <Link className="login-signup-link" to="/signup">

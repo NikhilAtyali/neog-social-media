@@ -10,19 +10,19 @@ export const Sidebar = () => {
   return (
     <>
       <aside className="sidebar-container">
-        <NavLink>
+      <NavLink to="/home">
           <HomeIcon />
         </NavLink>
-        <NavLink>
+        <NavLink to="/explore">
           <ExploreIcon />
         </NavLink>
         <button>
           <AddCircleOutlineIcon />
         </button>
-        <NavLink>
+        <NavLink to="/bookmark">
           <BookmarkIcon />
         </NavLink>
-        <NavLink>
+        <NavLink to="/liked">
           <FavoriteIcon />
         </NavLink>
       </aside>

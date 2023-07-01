@@ -5,12 +5,18 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import {makeServer} from "./server"
+import { AuthProvider } from "./context/AuthContext";
+import { PostProvider } from "./context/PostContext";
 //call make server
 makeServer();
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Router>
-    <App />
+    <AuthProvider>
+        <PostProvider>
+          <App />
+        </PostProvider>
+      </AuthProvider>
   </Router>
 );
 
