@@ -6,7 +6,7 @@ import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import "./Login.css";
 
-const Login = () => {
+export const Login = () => {
   const { loginHandler } = useContext(AuthContext);
   return (
     <div className="login-container">
@@ -63,4 +63,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+

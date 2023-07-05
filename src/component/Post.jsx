@@ -17,7 +17,14 @@ export const Post = ({ postDetails }) => {
   const { toggleBookmark, isBookmarked } = useContext(AuthContext);
 
   const { firstName, lastName, profileImg } = searchUserDetail(username);
-
+  const copyPostUrl = async (postId) => {
+    const route = `${window.location.origin}/posts/${postId}`;
+    try {
+      await navigator.clipboard.writeText(route);
+    } catch (e) {
+      console.error(e);
+    }
+  };
   return (
     <>
       <main className="post-container">
@@ -63,7 +70,7 @@ export const Post = ({ postDetails }) => {
             <ChatBubbleOutlineIcon />
             <span>1</span>
           </div>
-          <ShareIcon />
+          <ShareIcon onClick={() => copyPostUrl(_id)}/>
         </section>
       </main>
     </>
