@@ -1,9 +1,11 @@
 import { useContext } from "react";
 import "./SuggestionBar.css";
 import { UserContext } from "../context/userContext";
+import { useNavigate } from "react-router";
 export const SuggestionBar = () => {
   const { getPotentialFollowUser, toggleFollow } = useContext(UserContext);
   const users = getPotentialFollowUser();
+  const navigate = useNavigate();
   return (
     <>
       <div className="suggestion-container">
@@ -11,8 +13,18 @@ export const SuggestionBar = () => {
         <ul>
         {users.map(({ _id, profileImg, username }) => (
             <li key={_id}>
-              <img src={profileImg} alt="user" />
-              <p>{username}</p>
+              <img
+                src={profileImg}
+                alt="user"
+                style={{ cursor: "pointer" }}
+                onClick={() => navigate(`/profile/${username}`)}
+              />
+              <p
+                style={{ cursor: "pointer" }}
+                onClick={() => navigate(`/profile/${username}`)}
+              >
+                {username}
+              </p>
               <button onClick={() => toggleFollow(_id)}>Follow</button>
             </li>
           ))}

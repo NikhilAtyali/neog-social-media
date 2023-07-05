@@ -5,6 +5,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { AuthContext } from "../context/AuthContext";
 export const Navbar = () => {
   const { user } = useContext(AuthContext);
+  const { username, profileImg } = user;
   return (
     <>
       <nav className="nav-container">
@@ -15,8 +16,8 @@ export const Navbar = () => {
         />
 
         <input className="search-input" placeholder="Search User" />
-        <Link>
-        <img />
+        <Link to={`/profile/${username}`}>
+          <img className="nav-user-image" src={profileImg} alt="user" />
         </Link>
       </nav>
     </>

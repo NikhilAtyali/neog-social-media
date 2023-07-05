@@ -10,6 +10,12 @@ const authReducer = (prevState, { type, payload }) => {
         user: { ...payload.foundUser },
         token: payload.encodedToken,
       };
+      case "LOGOUT_USER":
+      return {
+        isLoggedIn: false,
+        user: {},
+        token: "",
+      };
       case "UPDATE_USER":
       return { ...prevState, user: { ...payload } };
     case "UPDATE_BOOKMARK":
@@ -51,7 +57,10 @@ export const AuthProvider = ({ children }) => {
       console.error(e);
     }
   };
-
+  const logoutHandler = () => {
+    localStorage.removeItem("token");
+    dispatch({ type: "LOGOUT_USER", payload: {} });
+  };
   const signupHandler = async (event) => {
     event.preventDefault();
     try {
@@ -129,6 +138,7 @@ export const AuthProvider = ({ children }) => {
         toggleBookmark,
         isBookmarked,
         checkLogin,
+        logoutHandler
       }}
     >
       {children}

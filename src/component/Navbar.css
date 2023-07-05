@@ -14,6 +14,11 @@
 .nav-brand-logo {
   width: 8rem;
 }
+.nav-user-image {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}
 .search-input {
   padding: 0.5rem;
   border-radius: 3rem;
