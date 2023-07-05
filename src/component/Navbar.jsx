@@ -1,7 +1,10 @@
+import { useContext } from "react";
 import "./Navbar.css";
 import { Link } from "react-router-dom";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { AuthContext } from "../context/AuthContext";
 export const Navbar = () => {
+  const { user } = useContext(AuthContext);
   return (
     <>
       <nav className="nav-container">
@@ -13,7 +16,7 @@ export const Navbar = () => {
 
         <input className="search-input" placeholder="Search User" />
         <Link>
-          <AccountCircleIcon />
+        <img />
         </Link>
       </nav>
     </>

@@ -53,16 +53,8 @@ export const PostProvider = ({ children }) => {
     }
   };
 
-  const getPostDetails = async (postId) => {
-    try {
-      const response = await fetch(`/api/posts/${postId}`);
-      if (response.status === 200) {
-        const responseData = await response.json();
-        return responseData.post;
-      }
-    } catch (e) {
-      console.error(e);
-    }
+  const getPostDetails = (postId) => {
+    return postData.posts.find(({ _id }) => _id === postId);
   };
 
   const likePostHandler = async (postId) => {
@@ -156,6 +148,7 @@ export const PostProvider = ({ children }) => {
         getBookmarkedPost,
         getPostDetails,
         getLikedPost,
+        getPostDetails,
         isLikedHandler,
         toggleLikeHandler,
       }}
