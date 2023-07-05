@@ -7,8 +7,6 @@ const postReducer = (prevState, { type, payload }) => {
   switch (type) {
     case "SET_POST":
       return { posts: [...payload] };
-    case "SET_USERS":
-      return { ...prevState, users: [...payload] };
     case "SET_USER_POST":
       return { ...prevState, userPosts: [...payload] };
     case "LIKE_DISLIKE_POST":
@@ -25,24 +23,18 @@ const postReducer = (prevState, { type, payload }) => {
 };
 
 export const PostProvider = ({ children }) => {
-  const { loggedUsername } = useContext(AuthContext);
+  const { loggedUsername, bookmarked } = useContext(AuthContext);
   const [postData, dispatch] = useReducer(postReducer, {
     posts: [],
-    users: [],
     userPosts: [],
   });
 
   const getData = async () => {
     try {
       const responsePost = await fetch("/api/posts");
-      const responseUser = await fetch("/api/users");
       if (responsePost.status === 200) {
         const responseData = await responsePost.json();
         dispatch({ type: "SET_POST", payload: responseData.posts });
-      }
-      if (responseUser.status === 200) {
-        const responseUserData = await responseUser.json();
-        dispatch({ type: "SET_USERS", payload: responseUserData.users });
       }
     } catch (e) {
       console.error(e);
@@ -71,10 +63,6 @@ export const PostProvider = ({ children }) => {
     } catch (e) {
       console.error(e);
     }
-  };
-
-  const searchUserDetail = (queryUser) => {
-    return postData.users.find(({ username }) => username === queryUser);
   };
 
   const likePostHandler = async (postId) => {
@@ -133,6 +121,23 @@ export const PostProvider = ({ children }) => {
       ? dislikePostHandler(postId)
       : likePostHandler(postId);
   };
+  const getBookmarkedPost = () => {
+    return postData.posts.filter(({ _id }) =>
+      bookmarked.find((item) => item === _id)
+    );
+  };
+  const getLikedPost = () => {
+    return postData.posts.filter(({ likes }) =>
+      likes.likedBy.find(({ username }) => username === loggedUsername)
+    );
+  };
+  const isLikedHandler = (postId) => {
+    return postData.posts
+      .find(({ _id }) => _id === postId)
+      .likes?.likedBy?.find(({ username }) => username === loggedUsername)
+      ? true
+      : false;
+  };
 
   useEffect(() => {
     getData();
@@ -145,12 +150,13 @@ export const PostProvider = ({ children }) => {
   return (
     <PostContext.Provider
       value={{
-        postData,
+        posts: postData.posts,
         userPosts: postData.userPosts,
-        users: postData.users,
         getUserPost,
+        getBookmarkedPost,
         getPostDetails,
-        searchUserDetail,
+        getLikedPost,
+        isLikedHandler,
         toggleLikeHandler,
       }}
     >

@@ -4,19 +4,22 @@ import { BrowserRouter as Router } from "react-router-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import {makeServer} from "./server"
+import { makeServer } from "./server";
 import { AuthProvider } from "./context/AuthContext";
 import { PostProvider } from "./context/PostContext";
+import { UserProvider } from "./context/userContext";
 //call make server
 makeServer();
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Router>
     <AuthProvider>
-        <PostProvider>
+      <PostProvider>
+        <UserProvider>
           <App />
-        </PostProvider>
-      </AuthProvider>
+        </UserProvider>
+      </PostProvider>
+    </AuthProvider>
   </Router>
 );
 

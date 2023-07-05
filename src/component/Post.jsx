@@ -2,15 +2,19 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
 import ShareIcon from "@mui/icons-material/Share";
 import "./Post.css";
 import { useContext } from "react";
 import { PostContext } from "../context/PostContext";
 import { AuthContext } from "../context/AuthContext";
+import { UserContext } from "../context/userContext"
 export const Post = ({ postDetails }) => {
   const { _id, content, createdAt, likes, username } = postDetails;
-  const { searchUserDetail, toggleLikeHandler } = useContext(PostContext);
-  const { toggleBookmark } = useContext(AuthContext);
+  const { toggleLikeHandler, isLikedHandler } = useContext(PostContext);
+  const { searchUserDetail } = useContext(UserContext);
+  const { toggleBookmark, isBookmarked } = useContext(AuthContext);
 
   const { firstName, lastName, profileImg } = searchUserDetail(username);
 
@@ -37,10 +41,24 @@ export const Post = ({ postDetails }) => {
         <p>{content}</p>
         <section className="post-action-container">
           <div>
-            <FavoriteBorderIcon onClick={() => toggleLikeHandler(_id)} />
+          {isLikedHandler(_id) ? (
+              <FavoriteIcon
+                className="red"
+                onClick={() => toggleLikeHandler(_id)}
+              />
+            ) : (
+              <FavoriteBorderIcon onClick={() => toggleLikeHandler(_id)} />
+            )}
             <span>{likes.likeCount}</span>
           </div>
-          <BookmarkBorderIcon onClick={() => toggleBookmark(_id)} />
+          {isBookmarked(_id) ? (
+            <BookmarkIcon
+              onClick={() => toggleBookmark(_id)}
+              className="yellow"
+            />
+          ) : (
+            <BookmarkBorderIcon onClick={() => toggleBookmark(_id)} />
+          )}
           <div>
             <ChatBubbleOutlineIcon />
             <span>1</span>

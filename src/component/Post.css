@@ -34,6 +34,12 @@
   .post-action-container svg {
     cursor: pointer;
   }
+  .red {
+    color: #f00;
+  }
+  .yellow {
+    color: #e49b0f;
+  }
   .post-action-container {
     display: flex;
     border-top: 1px solid #eee;
