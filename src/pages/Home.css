@@ -10,8 +10,58 @@
     list-style: none;
     margin-bottom: 3rem;
   }
+  .home-post-filter {
+    display: flex;
+    margin: 1rem auto;
+    justify-content: space-evenly;
+    background-color: aliceblue;
+    width: 95%;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+  }
+  .home-post-filter button {
+    padding: 0.8rem;
+    border: none;
+    background-image: none;
+    width: 50%;
+    text-transform: uppercase;
+    font-size: 1rem;
+    transition: all 1s ease;
+    border-radius: none;
+  }
+  .home-post-filter button:hover {
+    background-color: rgba(25, 206, 149, 0.26);
+  }
+  .home-create-post-container {
+    width: 95%;
+    margin: 1rem auto;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+  }
+  .home-create-post-container textarea {
+    resize: none;
+    width: 95%;
+    border: 1px solid #bbb;
+    align-self: center;
+  }
+  .home-create-post-actions {
+    display: flex;
+    justify-content: space-between;
+    width: 95%;
+    margin: 0 auto;
+    padding: 0.5rem;
+  }
+  .home-create-post-actions section svg {
+    margin-left: 0.5rem;
+  }
+  .home-create-post-actions button {
+    padding: 0.5rem;
+    border: none;
+    text-transform: uppercase;
+    color: #fff;
+  }
   .home-container ul li {
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
     width: 95%;
-    border-radius: 0.5rem;
   }
