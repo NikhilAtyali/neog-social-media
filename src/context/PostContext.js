@@ -17,6 +17,15 @@ const postReducer = (prevState, { type, payload }) => {
           ({ username }) => username === payload.loggedUsername
         ),
       };
+    case "ADD_POST":
+      return {
+        ...prevState,
+        posts: payload.posts,
+        userPosts: [
+          payload.posts[payload.posts.length - 1],
+          ...prevState.userPosts,
+        ],
+      };
     default:
       return prevState;
   }
@@ -130,9 +139,50 @@ export const PostProvider = ({ children }) => {
       ? true
       : false;
   };
-  const createPost = async () => {
+
+  const getMediaUploadLink = async (media) => {
+    if (!media) {
+      return "";
+    }
+    const mediaData = new FormData();
+    mediaData.append("file", media);
+    mediaData.append("upload_preset", "hangout");
+    mediaData.append("cloud_name", "dl6n7lyxy");
+
+    const apiEndPoint =
+      media.type.slice(0, 5) === "image"
+        ? "https://api.cloudinary.com/v1_1/dl6n7lyxy/image/upload"
+        : "https://api.cloudinary.com/v1_1/dl6n7lyxy/video/upload";
+    try {
+      const response = await fetch(apiEndPoint, {
+        method: "post",
+        body: mediaData,
+      });
+      if (response.status === 200) {
+        const responseData = await response.json();
+        return responseData.url;
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const createPost = async (e) => {
+    e.preventDefault();
+    const postMsg = e.target.elements.postMsg.value.trim();
+    const media = e.target.elements.media.files[0];
+    if (postMsg === "" && !media) {
+      return;
+    }
+
+    const cloudinaryLink = await getMediaUploadLink(media);
     const token = localStorage.getItem("token");
-    const postBody = JSON.stringify({ postData: { name: "jumbo" } });
+    const postBody = JSON.stringify({
+      postData: {
+        content: e.target.elements.postMsg.value,
+        mediaURL: cloudinaryLink,
+      },
+    });
     try {
       const response = await fetch("/api/posts", {
         method: "POST",
@@ -142,12 +192,17 @@ export const PostProvider = ({ children }) => {
 
       if (response.status === 201) {
         const responseData = await response.json();
-        console.log(responseData);
+        dispatch({
+          type: "ADD_POST",
+          payload: { posts: responseData.posts, user: loggedUsername },
+        });
+        e.target.elements.postMsg.value = "";
       }
     } catch (e) {
       console.error(e);
     }
   };
+
   useEffect(() => {
     getData();
   }, []);
@@ -164,7 +219,6 @@ export const PostProvider = ({ children }) => {
         getUserPost,
         createPost,
         getBookmarkedPost,
-        getPostDetails,
         getLikedPost,
         getPostDetails,
         isLikedHandler,

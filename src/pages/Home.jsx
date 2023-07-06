@@ -2,17 +2,16 @@ import { useContext, useState } from "react";
 import { Post } from "../component/Post";
 import { PostContext } from "../context/PostContext";
 import "./Home.css";
-import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
-import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
+import { CreatePost } from "../component/CreatePost";
 
 export const Home = () => {
-  const { userPosts, createPost } = useContext(PostContext);
+  const { userPosts } = useContext(PostContext);
 
   const [filters, setFilters] = useState("");
 
   const sortHandler = (order) => {
     if (order === "latest") {
-      return (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt);
+      return (a, b) => new Date(b.createdAt) - new Date(a.createdAt);
     } else {
       return (a, b) => b.likes.likeCount - a.likes.likeCount;
     }
@@ -28,15 +27,7 @@ export const Home = () => {
     <>
       <div className="home-container">
         <div className="home-create-post-container">
-          <textarea rows={5}></textarea>
-
-          <div className="home-create-post-actions">
-            <section>
-              <InsertPhotoIcon />
-              <EmojiEmotionsIcon />
-            </section>
-            <button onClick={() => createPost()}>Post</button>
-          </div>
+        <CreatePost />
         </div>
         <div className="home-post-filter">
           <button onClick={() => setFilters("latest")}>Latest</button>

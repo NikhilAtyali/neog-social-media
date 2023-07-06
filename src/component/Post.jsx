@@ -12,7 +12,7 @@ import { AuthContext } from "../context/AuthContext";
 import { UserContext } from "../context/userContext";
 import { useNavigate } from "react-router";
 export const Post = ({ postDetails }) => {
-  const { _id, content, createdAt, likes, username } = postDetails;
+  const { _id, content, createdAt, likes, username, mediaURL } = postDetails;
   const { toggleLikeHandler, isLikedHandler } = useContext(PostContext);
   const { searchUserDetail } = useContext(UserContext);
   const { toggleBookmark, isBookmarked } = useContext(AuthContext);
@@ -32,7 +32,12 @@ export const Post = ({ postDetails }) => {
       <main className="post-container">
         <section className="post-header">
           <div className="post-user">
-            <img alt="user" src={profileImg} />
+          <img
+              onClick={() => navigate(`/profile/${username}`)}
+              style={{ cursor: "pointer" }}
+              alt="user"
+              src={profileImg}
+            />
             <div>
               <div className="post-user-detail">
                 <p className="post-username">{firstName + " " + lastName}</p>
@@ -47,8 +52,15 @@ export const Post = ({ postDetails }) => {
             <MoreHorizIcon />
           </div>
         </section>
-        <div onClick={() => navigate(`/posts/${_id}`)}>
-          <p>{content}</p>
+        
+        <div
+          className="content-container"
+          onClick={() => navigate(`/posts/${_id}`)}
+        >
+          <p className="post-content">{content}</p>
+          {mediaURL === "" ? null : (
+            <img className="post-media" src={mediaURL} alt={username} />
+          )}
         </div>
         <section className="post-action-container">
           <div>

@@ -42,7 +42,7 @@
   .home-create-post-container textarea {
     resize: none;
     width: 95%;
-    border: 1px solid #bbb;
+    border: 1px solid #ddd;
     align-self: center;
   }
   .home-create-post-actions {
@@ -51,9 +51,22 @@
     width: 95%;
     margin: 0 auto;
     padding: 0.5rem;
+    color: #444;
   }
   .home-create-post-actions section svg {
     margin-left: 0.5rem;
+    cursor: pointer;
+  }
+  .create-post-form {
+    display: flex;
+    flex-direction: column;
+  }
+  .create-actions {
+    display: flex;
+  }
+  .create-actions p {
+    margin-left: 1rem;
+    font-weight: 600;
   }
   .home-create-post-actions button {
     padding: 0.5rem;

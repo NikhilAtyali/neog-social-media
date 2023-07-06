@@ -34,6 +34,18 @@
   .post-action-container svg {
     cursor: pointer;
   }
+  .content-container {
+    display: flex;
+    flex-direction: column;
+  }
+  .post-media {
+    display: block;
+    margin: 1rem auto;
+    width: 75%;
+  }
+  .post-content {
+    overflow-wrap: break-word;
+  }
   .red {
     color: #f00;
   }
