@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { UserContext } from "../context/userContext"
+import { UserContext } from "../context/userContext";
 import { useParams } from "react-router";
 import LogoutIcon from "@mui/icons-material/Logout";
 import "./Profile.css";
@@ -13,7 +13,9 @@ export const Profile = () => {
   const { username } = useParams();
   const [isOpen, setIsOpen] = useState(false);
   const userDetail = searchUserDetail(username);
-  //   console.log(searchUserDetail(username));
+  const modalCloseHandler = () => {
+    setIsOpen(false);
+  };
   const {
     _id,
     firstName,
@@ -22,6 +24,7 @@ export const Profile = () => {
     bannerImg,
     quote,
     followers,
+    portfolioURL,
     following,
   } = userDetail;
   return (
@@ -53,8 +56,11 @@ export const Profile = () => {
               style={{ display: shouldFollowEnable(username) && "none" }}
             >
               <button onClick={() => setIsOpen(true)}>Edit Profile</button>
-              <Modal open={isOpen} close={() => setIsOpen(false)}>
-                <EditProfile userDetail={userDetail} />
+              <Modal open={isOpen} close={modalCloseHandler}>
+                <EditProfile
+                  userDetail={userDetail}
+                  close={modalCloseHandler}
+                />
               </Modal>
               <LogoutIcon
                 className="profile-logout"
@@ -66,12 +72,8 @@ export const Profile = () => {
           <div>
             <p className="profile-quote">{quote}</p>
             <div className="profile-links">
-              <a
-                target="_blank"
-                href="https://github.com/Amankumar62"
-                rel="noreferrer"
-              >
-                https://www.something.com
+              <a target="_blank" href={portfolioURL} rel="noreferrer">
+                {portfolioURL}
               </a>
             </div>
           </div>

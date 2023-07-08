@@ -1,12 +1,20 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
 import { AuthContext } from "./AuthContext";
+import { PostContext } from "./PostContext";
 
 export const UserContext = createContext();
 const usersReducer = (prevState, { type, payload }) => {
   switch (type) {
     case "SET_USERS":
       return { ...prevState, users: [...payload] };
-    case "UPDATE_USER":
+    case "UPDATE_PROFILE":
+      return {
+        ...prevState,
+        users: prevState.users.map((user) =>
+          user._id === payload._id ? payload : user
+        ),
+      };
+    case "UPDATE_FOLLOW":
       return {
         ...prevState,
         users: [
@@ -27,7 +35,7 @@ const usersReducer = (prevState, { type, payload }) => {
 export const UserProvider = ({ children }) => {
   const [usersData, dispatch] = useReducer(usersReducer, { users: [] });
   const { updateUserHandler, loggedUsername } = useContext(AuthContext);
-
+  const { getMediaUploadLink } = useContext(PostContext);
   const getUsersData = async () => {
     try {
       const responseUser = await fetch("/api/users");
@@ -54,7 +62,7 @@ export const UserProvider = ({ children }) => {
       if (response.status === 200) {
         const responseData = await response.json();
         dispatch({
-          type: "UPDATE_USER",
+          type: "UPDATE_FOLLOW",
           payload: {
             follower: responseData.user,
             following: responseData.followUser,
@@ -79,7 +87,7 @@ export const UserProvider = ({ children }) => {
       if (response.status) {
         const responseData = await response.json();
         dispatch({
-          type: "UPDATE_USER",
+          type: "UPDATE_FOLLOW",
           payload: {
             follower: responseData.user,
             following: responseData.followUser,
@@ -105,19 +113,89 @@ export const UserProvider = ({ children }) => {
         !followers.find(({ username }) => username === loggedUsername) &&
         username !== loggedUsername
     );
-  }
-    const shouldFollowEnable = (username) => {
-      return username !== loggedUsername;
-    };
-  
-    const isFollowing = (checking) => {
-      const user = usersData.users.find(({ username }) => username === checking);
-      return user.followers.find(({ username }) => username === loggedUsername);
+  };
+
+  const shouldFollowEnable = (username) => {
+    return username !== loggedUsername;
+  };
+
+  const isFollowing = (checking) => {
+    const user = usersData.users.find(({ username }) => username === checking);
+    return user.followers.find(({ username }) => username === loggedUsername);
+  };
+
+  const getRequestBody = async (profileImg, bannerImg, bio, url) => {
+    const profileImgUrl = await getMediaUploadLink(profileImg);
+    const bannerImgUrl = await getMediaUploadLink(bannerImg);
+    if (profileImgUrl !== "" && bannerImgUrl !== "") {
+      return {
+        userData: {
+          quote: bio,
+          portfolioURL: url,
+          profileImg: profileImgUrl,
+          bannerImg: bannerImgUrl,
+        },
+      };
+    } else if (profileImgUrl !== "" && bannerImgUrl === "") {
+      return {
+        userData: {
+          quote: bio,
+          portfolioURL: url,
+          profileImg: profileImgUrl,
+        },
+      };
+    } else if (profileImgUrl === "" && bannerImgUrl !== "") {
+      return {
+        userData: {
+          quote: bio,
+          portfolioURL: url,
+          bannerImg: bannerImgUrl,
+        },
+      };
+    } else {
+      return {
+        userData: {
+          quote: bio,
+          portfolioURL: url,
+        },
+      };
+    }
+  };
+
+  const editProfileHandler = async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem("token");
+    const profileImg = e.target.elements.profileImg.files[0];
+    const bannerImg = e.target.elements.bannerImg.files[0];
+    const url = e.target.elements.porfileUrl.value;
+    const bio = e.target.elements.bio.value;
+    const body = await getRequestBody(profileImg, bannerImg, bio, url);
+
+    const requestBody = JSON.stringify(body);
+    try {
+      const response = await fetch("/api/users/edit", {
+        method: "POST",
+        headers: {
+          authorization: token,
+        },
+        body: requestBody,
+      });
+      if (response.status === 201) {
+        const responseData = await response.json();
+        dispatch({ type: "UPDATE_PROFILE", payload: responseData.user });
+        updateUserHandler(responseData.user);
+        return true;
+      }
+      return false;
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   useEffect(() => {
     getUsersData();
   }, []);
+
   return (
     <UserContext.Provider
       value={{
@@ -126,8 +204,9 @@ export const UserProvider = ({ children }) => {
         toggleFollow,
         shouldFollowEnable,
         unFollowUserHandler,
-        getPotentialFollowUser,
         isFollowing,
+        editProfileHandler,
+        getPotentialFollowUser,
       }}
     >
       {children}

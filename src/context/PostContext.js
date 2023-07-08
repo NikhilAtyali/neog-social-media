@@ -131,21 +131,21 @@ export const PostProvider = ({ children }) => {
   };
 
   const toggleLikeHandler = (postId) => {
-    const post = postData.posts.find(({ _id }) => _id === postId);
-    return post.likes.likedBy.find(
+    const post = postData?.posts?.find(({ _id }) => _id === postId);
+    return post?.likes?.likedBy?.find(
       ({ username }) => username === loggedUsername
     )
       ? dislikePostHandler(postId)
       : likePostHandler(postId);
   };
   const getBookmarkedPost = () => {
-    return postData.posts.filter(({ _id }) =>
-      bookmarked.find((item) => item === _id)
+    return postData?.posts?.filter(({ _id }) =>
+      bookmarked?.find((item) => item === _id)
     );
   };
   const getLikedPost = () => {
-    return postData.posts.filter(({ likes }) =>
-      likes.likedBy.find(({ username }) => username === loggedUsername)
+    return postData?.posts?.filter(({ likes }) =>
+      likes?.likedBy?.find(({ username }) => username === loggedUsername)
     );
   };
   const isLikedHandler = (postId) => {
@@ -305,6 +305,7 @@ export const PostProvider = ({ children }) => {
         getPostDetails,
         deletePost,
         editPost,
+        getMediaUploadLink,
         isLikedHandler,
         toggleLikeHandler,
       }}

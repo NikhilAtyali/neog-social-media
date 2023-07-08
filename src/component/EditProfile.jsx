@@ -1,18 +1,47 @@
-import { useRef } from "react";
+import { useContext, useReducer, useRef } from "react";
 import "./EditProfile.css";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
-export const EditProfile = ({ userDetail }) => {
-  const { _id, firstName, lastName, username, profileImg, bannerImg, quote } =
-    userDetail;
+import { UserContext } from "../context/userContext";
+
+const profileReducer = (prevState, { type, payload }) => {
+  switch (type) {
+    case "UPDATE_BIO":
+      return { ...prevState, profileQuote: payload };
+    case "UPDATE_URL":
+      return { ...prevState, url: payload };
+    default:
+      return prevState;
+  }
+};
+
+export const EditProfile = ({ userDetail, close }) => {
+  const [profileData, dispatch] = useReducer(profileReducer, {
+    profileQuote: userDetail?.quote,
+    url: userDetail?.portfolioURL,
+  });
+  const { firstName, lastName, username, profileImg } = userDetail;
+  const { editProfileHandler } = useContext(UserContext);
 
   const profileImageRef = useRef(null);
-  const handleProfileClick = () => {
+
+  const handleProfileClick = (e) => {
+    if (e.target.id !== "profileImg") {
+      return;
+    }
     profileImageRef.current.click();
   };
+
+  const handleSubmit = (e) => {
+    const success = editProfileHandler(e);
+    if (success) {
+      close();
+    }
+  };
+
   return (
     <>
-      <form className="edit-profile-form">
-        <label className="avatar-label">
+      <form className="edit-profile-form" onSubmit={(e) => handleSubmit(e)}>
+        <label className="avatar-label" htmlFor="profileImg">
           Avatar
           <span>
             <img
@@ -33,9 +62,9 @@ export const EditProfile = ({ userDetail }) => {
             style={{ display: "none" }}
           />
         </label>
-        <label>
+        <label htmlFor="bannerImg">
           Banner image:
-          <input type="file" id="bannerImg" />
+          <input type="file" id="bannerImg" accept="image/*" />
         </label>
         <label>
           Name:{" "}
@@ -46,21 +75,35 @@ export const EditProfile = ({ userDetail }) => {
         <label>
           Username: <span>{username}</span>
         </label>
-        <label>
-          Bio:
-          <input type="text" value={quote} />
-        </label>
-
-        <label>
+        <label htmlFor="profileUrl">
           Website:
           <input
             type="url"
             placeholder="https://example.com"
             pattern="https://.*"
             size="30"
+            id="porfileUrl"
+            value={profileData.url}
+            onChange={(e) =>
+              dispatch({ type: "UPDATE_URL", payload: e.target.value })
+            }
           />
         </label>
-        <button type="submit">Update</button>
+        <label htmlFor="bio">
+          Bio:
+          <textarea
+            className="edit-profile-bio"
+            value={profileData.profileQuote}
+            id="bio"
+            onChange={(e) =>
+              dispatch({ type: "UPDATE_BIO", payload: e.target.value })
+            }
+          ></textarea>
+        </label>
+
+        <button className="edit-user-btn" type="submit">
+          Update profile
+        </button>
       </form>
     </>
   );

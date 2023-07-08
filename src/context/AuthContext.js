@@ -134,12 +134,12 @@ export const AuthProvider = ({ children }) => {
         loggedUsername: userData.user.username,
         bookmarked: userData.user.bookmarks,
         loginHandler,
+        logoutHandler,
         updateUserHandler,
         signupHandler,
         toggleBookmark,
         isBookmarked,
         checkLogin,
-        logoutHandler
       }}
     >
       {children}
