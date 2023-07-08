@@ -17,3 +17,12 @@
     z-index: 1000;
     background-color: rgba(0, 0, 0, 0.7);
   }
+
+  .close-modal {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .close-modal button {
+    border: none;
+    background-image: none;
+  }

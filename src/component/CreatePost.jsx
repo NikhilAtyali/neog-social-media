@@ -18,7 +18,11 @@ export const CreatePost = () => {
   return (
     <>
       <form onSubmit={(e) => createPost(e)} className="create-post-form">
-        <textarea id="postMsg" rows={5}></textarea>
+      <textarea
+          id="postMsg"
+          rows={5}
+          placeholder="Whats happening?"
+        ></textarea>
         <div className="home-create-post-actions">
           <section className="create-actions">
             <input

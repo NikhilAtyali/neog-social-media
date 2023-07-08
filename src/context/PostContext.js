@@ -26,12 +26,22 @@ const postReducer = (prevState, { type, payload }) => {
           ...prevState.userPosts,
         ],
       };
-      case "DELETE_POST":
-        return {
-          ...prevState,
-          posts: prevState.posts.filter(({ _id }) => _id !== payload),
-          userPosts: prevState.userPosts.filter(({ _id }) => _id !== payload),
-        };
+    case "DELETE_POST":
+      return {
+        ...prevState,
+        posts: prevState.posts.filter(({ _id }) => _id !== payload),
+        userPosts: prevState.userPosts.filter(({ _id }) => _id !== payload),
+      };
+    case "EDIT_POST":
+      return {
+        ...prevState,
+        posts: prevState.posts.map((post) =>
+          post._id === payload._id ? payload : post
+        ),
+        userPosts: prevState.userPosts.map((post) =>
+          post._id === payload._id ? payload : post
+        ),
+      };
     default:
       return prevState;
   }
@@ -121,21 +131,21 @@ export const PostProvider = ({ children }) => {
   };
 
   const toggleLikeHandler = (postId) => {
-    const post = postData?.posts?.find(({ _id }) => _id === postId);
-    return post?.likes?.likedBy?.find(
+    const post = postData.posts.find(({ _id }) => _id === postId);
+    return post.likes.likedBy.find(
       ({ username }) => username === loggedUsername
     )
       ? dislikePostHandler(postId)
       : likePostHandler(postId);
   };
   const getBookmarkedPost = () => {
-    return postData?.posts?.filter(({ _id }) =>
-      bookmarked?.find((item) => item === _id)
+    return postData.posts.filter(({ _id }) =>
+      bookmarked.find((item) => item === _id)
     );
   };
   const getLikedPost = () => {
-    return postData?.posts?.filter(({ likes }) =>
-      likes?.likedBy?.find(({ username }) => username === loggedUsername)
+    return postData.posts.filter(({ likes }) =>
+      likes.likedBy.find(({ username }) => username === loggedUsername)
     );
   };
   const isLikedHandler = (postId) => {
@@ -182,26 +192,24 @@ export const PostProvider = ({ children }) => {
       console.log("entered");
       return;
     }
-    if (Math.floor(media?.size * 0.000001) > 4) {
+    if (Math.floor(media.size * 0.000001) > 4) {
       alert("File Size greater than 4mb");
       return;
     }
-    
-
-      const cloudinaryLink = await getMediaUploadLink(media);
-      const token = localStorage.getItem("token");
-      let mediaData = {};
-      if (media?.type.slice(0, 5) === "image") {
-        mediaData = {
-          images: { imageURL: cloudinaryLink, deleteToken: "" },
-          video: { videoURL: "", deleteToken: "" },
-        };
-      } else {
-        mediaData = {
-          images: { imageURL: "", deleteToken: "" },
-          video: { videoURL: cloudinaryLink, deleteToken: "" },
-        };
-      }
+    const cloudinaryLink = await getMediaUploadLink(media);
+    const token = localStorage.getItem("token");
+    let mediaData = {};
+    if (media.type.slice(0, 5) === "image") {
+      mediaData = {
+        images: { imageURL: cloudinaryLink, deleteToken: "" },
+        video: { videoURL: "", deleteToken: "" },
+      };
+    } else {
+      mediaData = {
+        images: { imageURL: "", deleteToken: "" },
+        video: { videoURL: cloudinaryLink, deleteToken: "" },
+      };
+    }
     const postBody = JSON.stringify({
       postData: {
         content: e.target.elements.postMsg.value,
@@ -227,6 +235,7 @@ export const PostProvider = ({ children }) => {
       console.error(e);
     }
   };
+
   const deletePost = async (postId) => {
     const token = localStorage.getItem("token");
     try {
@@ -237,14 +246,45 @@ export const PostProvider = ({ children }) => {
         },
       });
       if (response.status === 201) {
-        const responseData = await response.json();
         dispatch({ type: "DELETE_POST", payload: postId });
-        console.log(responseData);
       }
     } catch (e) {
       console.error(e);
     }
   };
+
+  const editPost = async (e, postId) => {
+    e.preventDefault();
+    const contentVal = e.target.elements.postMsgEdit.value;
+    if (contentVal === "") {
+      return;
+    }
+    const token = localStorage.getItem("token");
+    const postBody = JSON.stringify({
+      postData: {
+        content: contentVal,
+      },
+    });
+    try {
+      const response = await fetch(`/api/posts/edit/${postId}`, {
+        method: "POST",
+        headers: {
+          authorization: token,
+        },
+        body: postBody,
+      });
+      if (response.status === 201) {
+        const responseData = await response.json();
+
+        const post = responseData.posts.find(({ _id }) => _id === postId);
+        dispatch({ type: "EDIT_POST", payload: post });
+        return true;
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   useEffect(() => {
     getData();
   }, []);
@@ -264,6 +304,7 @@ export const PostProvider = ({ children }) => {
         getLikedPost,
         getPostDetails,
         deletePost,
+        editPost,
         isLikedHandler,
         toggleLikeHandler,
       }}

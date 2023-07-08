@@ -17,6 +17,7 @@ export const Home = () => {
     }
   };
   let filteredPost = userPosts;
+  console.log(filteredPost, "filteredPost");
   if (filters === "latest") {
     filteredPost = userPosts.sort(sortHandler("latest"));
   } else if (filters === "trending") {
