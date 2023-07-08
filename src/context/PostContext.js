@@ -26,6 +26,12 @@ const postReducer = (prevState, { type, payload }) => {
           ...prevState.userPosts,
         ],
       };
+      case "DELETE_POST":
+        return {
+          ...prevState,
+          posts: prevState.posts.filter(({ _id }) => _id !== payload),
+          userPosts: prevState.userPosts.filter(({ _id }) => _id !== payload),
+        };
     default:
       return prevState;
   }
@@ -115,21 +121,21 @@ export const PostProvider = ({ children }) => {
   };
 
   const toggleLikeHandler = (postId) => {
-    const post = postData.posts.find(({ _id }) => _id === postId);
-    return post.likes.likedBy.find(
+    const post = postData?.posts?.find(({ _id }) => _id === postId);
+    return post?.likes?.likedBy?.find(
       ({ username }) => username === loggedUsername
     )
       ? dislikePostHandler(postId)
       : likePostHandler(postId);
   };
   const getBookmarkedPost = () => {
-    return postData.posts.filter(({ _id }) =>
-      bookmarked.find((item) => item === _id)
+    return postData?.posts?.filter(({ _id }) =>
+      bookmarked?.find((item) => item === _id)
     );
   };
   const getLikedPost = () => {
-    return postData.posts.filter(({ likes }) =>
-      likes.likedBy.find(({ username }) => username === loggedUsername)
+    return postData?.posts?.filter(({ likes }) =>
+      likes?.likedBy?.find(({ username }) => username === loggedUsername)
     );
   };
   const isLikedHandler = (postId) => {
@@ -221,7 +227,24 @@ export const PostProvider = ({ children }) => {
       console.error(e);
     }
   };
-
+  const deletePost = async (postId) => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await fetch(`/api/posts/${postId}`, {
+        method: "DELETE",
+        headers: {
+          authorization: token,
+        },
+      });
+      if (response.status === 201) {
+        const responseData = await response.json();
+        dispatch({ type: "DELETE_POST", payload: postId });
+        console.log(responseData);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
   useEffect(() => {
     getData();
   }, []);
@@ -240,6 +263,7 @@ export const PostProvider = ({ children }) => {
         getBookmarkedPost,
         getLikedPost,
         getPostDetails,
+        deletePost,
         isLikedHandler,
         toggleLikeHandler,
       }}

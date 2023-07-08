@@ -6,6 +6,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import ShareIcon from "@mui/icons-material/Share";
 import "./Post.css";
+import { Modal } from "./Modal";
 import { useContext, useState } from "react";
 import { PostContext } from "../context/PostContext";
 import { AuthContext } from "../context/AuthContext";
@@ -15,7 +16,7 @@ import { Popper } from "@mui/material";
 
 export const Post = ({ postDetails }) => {
   const { _id, content, createdAt, likes, username, mediaURL } = postDetails;
-  const { toggleLikeHandler, isLikedHandler } = useContext(PostContext);
+  const { toggleLikeHandler, isLikedHandler, deletePost } = useContext(PostContext);
   const { searchUserDetail } = useContext(UserContext);
   const { toggleBookmark, isBookmarked, loggedUsername } =
   useContext(AuthContext);
@@ -33,9 +34,16 @@ export const Post = ({ postDetails }) => {
   const handlePopper = (event) => {
     anchorEl === null ? setAnchorEl(event.currentTarget) : setAnchorEl(null);
   };
+  const [isOpen, setIsOpen] = useState(false);
+  const modalCloseHandler = () => {
+    setIsOpen(false);
+  };
   const navigate = useNavigate();
   return (
     <>
+    <Modal open={isOpen} close={modalCloseHandler}>
+        <h1>Hello</h1>
+      </Modal>
       <main className="post-container">
         <section className="post-header">
           <div className="post-user">
@@ -71,10 +79,10 @@ export const Post = ({ postDetails }) => {
             >
               <ul className="post-update-options">
                 <li>
-                  <button>Edit</button>
+                <button onClick={() => setIsOpen(true)}>Edit</button>
                 </li>
                 <li>
-                  <button>Delete</button>
+                <button onClick={() => deletePost(_id)}>Delete</button>
                 </li>
               </ul>
             </Popper>
