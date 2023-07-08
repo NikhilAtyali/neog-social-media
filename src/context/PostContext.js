@@ -171,16 +171,35 @@ export const PostProvider = ({ children }) => {
     e.preventDefault();
     const postMsg = e.target.elements.postMsg.value.trim();
     const media = e.target.elements.media.files[0];
+    const reset = e.target.elements.reset;
     if (postMsg === "" && !media) {
+      console.log("entered");
       return;
     }
+    if (Math.floor(media?.size * 0.000001) > 4) {
+      alert("File Size greater than 4mb");
+      return;
+    }
+    
 
-    const cloudinaryLink = await getMediaUploadLink(media);
-    const token = localStorage.getItem("token");
+      const cloudinaryLink = await getMediaUploadLink(media);
+      const token = localStorage.getItem("token");
+      let mediaData = {};
+      if (media?.type.slice(0, 5) === "image") {
+        mediaData = {
+          images: { imageURL: cloudinaryLink, deleteToken: "" },
+          video: { videoURL: "", deleteToken: "" },
+        };
+      } else {
+        mediaData = {
+          images: { imageURL: "", deleteToken: "" },
+          video: { videoURL: cloudinaryLink, deleteToken: "" },
+        };
+      }
     const postBody = JSON.stringify({
       postData: {
         content: e.target.elements.postMsg.value,
-        mediaURL: cloudinaryLink,
+        mediaURL: mediaData,
       },
     });
     try {
@@ -196,7 +215,7 @@ export const PostProvider = ({ children }) => {
           type: "ADD_POST",
           payload: { posts: responseData.posts, user: loggedUsername },
         });
-        e.target.elements.postMsg.value = "";
+        reset.click();
       }
     } catch (e) {
       console.error(e);

@@ -6,16 +6,19 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import ShareIcon from "@mui/icons-material/Share";
 import "./Post.css";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { PostContext } from "../context/PostContext";
 import { AuthContext } from "../context/AuthContext";
 import { UserContext } from "../context/userContext";
 import { useNavigate } from "react-router";
+import { Popper } from "@mui/material";
+
 export const Post = ({ postDetails }) => {
   const { _id, content, createdAt, likes, username, mediaURL } = postDetails;
   const { toggleLikeHandler, isLikedHandler } = useContext(PostContext);
   const { searchUserDetail } = useContext(UserContext);
-  const { toggleBookmark, isBookmarked } = useContext(AuthContext);
+  const { toggleBookmark, isBookmarked, loggedUsername } =
+  useContext(AuthContext);
 
   const { firstName, lastName, profileImg } = searchUserDetail(username);
   const copyPostUrl = async (postId) => {
@@ -25,6 +28,10 @@ export const Post = ({ postDetails }) => {
     } catch (e) {
       console.error(e);
     }
+  };
+  const [anchorEl, setAnchorEl] = useState(null);
+  const handlePopper = (event) => {
+    anchorEl === null ? setAnchorEl(event.currentTarget) : setAnchorEl(null);
   };
   const navigate = useNavigate();
   return (
@@ -48,8 +55,29 @@ export const Post = ({ postDetails }) => {
               <p className="post-userhandle">@{username}</p>
             </div>
           </div>
-          <div>
-            <MoreHorizIcon />
+          <div style={{ display: loggedUsername === username ? "" : "none" }}>
+            <MoreHorizIcon
+              style={{ cursor: "pointer" }}
+              onClick={handlePopper}
+            />
+            <Popper
+              open={Boolean(anchorEl)}
+              onClose={handlePopper}
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "left",
+              }}
+            >
+              <ul className="post-update-options">
+                <li>
+                  <button>Edit</button>
+                </li>
+                <li>
+                  <button>Delete</button>
+                </li>
+              </ul>
+            </Popper>
           </div>
         </section>
         
@@ -58,8 +86,24 @@ export const Post = ({ postDetails }) => {
           onClick={() => navigate(`/posts/${_id}`)}
         >
           <p className="post-content">{content}</p>
-          {mediaURL === "" ? null : (
-            <img className="post-media" src={mediaURL} alt={username} />
+          {mediaURL?.images?.imageURL === "" ? null : (
+            <img
+              className="post-media"
+              src={mediaURL?.images?.imageURL}
+              alt={username}
+            />
+          )}
+          {mediaURL?.video?.videoURL === "" ? null : (
+            <video controls width="250" className="post-media" autoPlay>
+              <source src={mediaURL?.video?.videoURL} type="video/webm" />
+
+              <source src={mediaURL?.video?.videoURL} type="video/mp4" />
+              <p>
+                Your browser doesn't support HTML video. Here is a
+                <a href={mediaURL?.video?.videoURL}>link to the video</a>{" "}
+                instead.
+              </p>
+            </video>
           )}
         </div>
         <section className="post-action-container">

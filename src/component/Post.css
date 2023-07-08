@@ -52,6 +52,28 @@
   .yellow {
     color: #e49b0f;
   }
+  .post-update-options {
+    list-style: none;
+    margin-top: 0.3rem;
+    background-color: #fff;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    transition: all 2s ease;
+  }
+  .post-update-options li button {
+    padding: 0.5rem;
+    width: 100%;
+    border: none;
+    text-align: start;
+    text-transform: capitalize;
+    background-image: none;
+    background-color: #fff;
+    border-radius: 0px;
+    font-size: 1rem;
+    border-bottom: 1px solid #eee;
+    color: #444;
+  }
   .post-action-container {
     display: flex;
     border-top: 1px solid #eee;

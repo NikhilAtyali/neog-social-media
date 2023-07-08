@@ -34,6 +34,14 @@ export const CreatePost = () => {
             <p>{fileName}</p>
           </section>
           <button type="submit">Post</button>
+          <button
+            type="reset"
+            onClick={() => setFileName("")}
+            id="reset"
+            style={{ display: "none" }}
+          >
+            Reset
+          </button>
         </div>
       </form>
     </>
