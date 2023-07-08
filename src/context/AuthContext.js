@@ -119,12 +119,12 @@ export const AuthProvider = ({ children }) => {
     }
   };
   const toggleBookmark = (postId) => {
-    return userData.user.bookmarks.find((id) => id === postId)
+    return userData?.user?.bookmarks?.find((id) => id === postId)
       ? removeBookmarkHandler(postId)
       : addBookmarkHandler(postId);
   };
   const isBookmarked = (postId) => {
-    return userData.user.bookmarks.find((id) => id === postId);
+    return userData?.user?.bookmark?.find((id) => id === postId);
   };
   return (
     <AuthContext.Provider

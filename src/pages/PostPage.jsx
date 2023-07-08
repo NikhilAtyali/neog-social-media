@@ -1,5 +1,5 @@
-import { useContext } from "react";
-import { useParams } from "react-router";
+import { useContext, useState } from "react";
+import { useNavigate, useParams } from "react-router";
 import { PostContext } from "../context/PostContext";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -8,18 +8,28 @@ import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import ShareIcon from "@mui/icons-material/Share";
+import { Popper } from "@mui/material";
+import { Modal } from "../component/Modal";
+import { EditPost } from "../component/EditPost";
 import { AuthContext } from "../context/AuthContext";
 import { UserContext } from "../context/userContext";
 
 export const PostPage = () => {
-  const { toggleLikeHandler, isLikedHandler } = useContext(PostContext);
-  const { searchUserDetail } = useContext(UserContext);
-  const { toggleBookmark, isBookmarked } = useContext(AuthContext);
+  const { toggleLikeHandler, isLikedHandler, deletePost } =
+    useContext(PostContext);
+  const { searchUserDetail } = useContext(UserContext)
+  const { toggleBookmark, isBookmarked, loggedUsername } =
+    useContext(AuthContext);
 
   const { postId } = useParams();
   const { getPostDetails } = useContext(PostContext);
-  const { _id, content, createdAt, likes, username } = getPostDetails(postId);
+  const postDetails = getPostDetails(postId);
+  const { _id, content, createdAt, likes, username } = postDetails;
+
   const { firstName, lastName, profileImg } = searchUserDetail(username);
+
+  const navigate = useNavigate();
+
   const copyPostUrl = async (postId) => {
     const route = `${window.location.origin}/posts/${postId}`;
     try {
@@ -28,13 +38,29 @@ export const PostPage = () => {
       console.error(e);
     }
   };
+  const [anchorEl, setAnchorEl] = useState(null);
+  const handlePopper = (event) => {
+    anchorEl === null ? setAnchorEl(event.currentTarget) : setAnchorEl(null);
+  };
+  const [isOpen, setIsOpen] = useState(false);
+  const modalCloseHandler = () => {
+    setIsOpen(false);
+  };
   return (
     <>
       <div className="home-container">
+        <Modal open={isOpen} close={modalCloseHandler}>
+          <EditPost postDetails={postDetails} close={modalCloseHandler} />
+        </Modal>
         <main className="post-container">
           <section className="post-header">
             <div className="post-user">
-              <img alt="user" src={profileImg} />
+              <img
+                alt="user"
+                src={profileImg}
+                onClick={() => navigate(`/profile/${username}`)}
+                style={{ cursor: "pointer" }}
+              />
               <div>
                 <div className="post-user-detail">
                   <p className="post-username">{firstName + " " + lastName}</p>
@@ -45,8 +71,36 @@ export const PostPage = () => {
                 <p className="post-userhandle">@{username}</p>
               </div>
             </div>
-            <div>
-              <MoreHorizIcon />
+            <div style={{ display: loggedUsername === username ? "" : "none" }}>
+              <MoreHorizIcon
+                style={{ cursor: "pointer" }}
+                onClick={handlePopper}
+              />
+              <Popper
+                open={Boolean(anchorEl)}
+                onClose={handlePopper}
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "left",
+                }}
+              >
+                <ul className="post-update-options">
+                  <li>
+                    <button onClick={() => setIsOpen(true)}>Edit</button>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => {
+                        navigate("/home");
+                        deletePost(_id);
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </li>
+                </ul>
+              </Popper>
             </div>
           </section>
           <div>
