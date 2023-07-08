@@ -75,6 +75,7 @@ export const AuthProvider = ({ children }) => {
 
   const checkLogin = () => {
     return userData.isLoggedIn;
+    // return localStorage.getItem("token") !== undefined;
   };
   const updateUserHandler = (updatedUser) => {
     dispatch({ type: "UPDATE_USER", payload: updatedUser });

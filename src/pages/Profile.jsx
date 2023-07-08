@@ -1,14 +1,18 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { UserContext } from "../context/userContext"
 import { useParams } from "react-router";
 import LogoutIcon from "@mui/icons-material/Logout";
 import "./Profile.css";
 import { AuthContext } from "../context/AuthContext";
+import { Modal } from "../component/Modal";
+import { EditProfile } from "../component/EditProfile";
 export const Profile = () => {
   const { searchUserDetail, toggleFollow, shouldFollowEnable, isFollowing } =
     useContext(UserContext);
   const { logoutHandler } = useContext(AuthContext);
   const { username } = useParams();
+  const [isOpen, setIsOpen] = useState(false);
+  const userDetail = searchUserDetail(username);
   //   console.log(searchUserDetail(username));
   const {
     _id,
@@ -19,7 +23,7 @@ export const Profile = () => {
     quote,
     followers,
     following,
-  } = searchUserDetail(username);
+  } = userDetail;
   return (
     <>
       <div className="home-container">
@@ -48,7 +52,10 @@ export const Profile = () => {
               className="profile-actions"
               style={{ display: shouldFollowEnable(username) && "none" }}
             >
-              <button>Edit Profile</button>
+              <button onClick={() => setIsOpen(true)}>Edit Profile</button>
+              <Modal open={isOpen} close={() => setIsOpen(false)}>
+                <EditProfile userDetail={userDetail} />
+              </Modal>
               <LogoutIcon
                 className="profile-logout"
                 onClick={() => logoutHandler()}
