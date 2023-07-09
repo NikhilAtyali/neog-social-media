@@ -7,9 +7,12 @@ import "./Profile.css";
 import { AuthContext } from "../context/AuthContext";
 import { Modal } from "../component/Modal";
 import { EditProfile } from "../component/EditProfile";
+import { ColorRing } from "react-loader-spinner";
+import { PostContext } from "../context/PostContext";
 export const Profile = () => {
   const { searchUserDetail, toggleFollow, shouldFollowEnable, isFollowing } =
     useContext(UserContext);
+    const { filterUserPost } = useContext(PostContext);
   const { logoutHandler } = useContext(AuthContext);
   const { username } = useParams();
   const [isOpen, setIsOpen] = useState(false);
@@ -28,23 +31,15 @@ export const Profile = () => {
     portfolioURL,
     following,
   } = userDetail;
-  const [userPosts, setUserPosts] = useState([]);
-
-  const getUserPost = async () => {
-    try {
-      const response = await fetch(`/api/posts/user/${username}`);
-      if (response.status === 200) {
-        const responseData = await response.json();
-        setUserPosts(responseData.posts);
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  };
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    getUserPost();
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
   }, [username]);
+  const userPosts = filterUserPost(username);
   return (
     <>
       <div className="home-container">
@@ -102,13 +97,31 @@ export const Profile = () => {
           </div>
         </section>
         <div className="profile-user-posts">
-          <ul>
-            {userPosts?.map((post) => (
-              <li key={post._id}>
-                <Post postDetails={post} />
-              </li>
-            ))}
-          </ul>
+        {isLoading ? (
+            <ColorRing
+              visible={true}
+              height="80"
+              width="80"
+              ariaLabel="blocks-loading"
+              wrapperStyle={{}}
+              wrapperClass="blocks-wrapper"
+              colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
+            />
+          ) : (
+            <ul>
+              {userPosts.length === 0 ? (
+                <p style={{ fontSize: "1.2rem", marginTop: "1rem" }}>
+                  Nothing posted yet
+                </p>
+              ) : (
+                userPosts?.map((post) => (
+                  <li key={post._id}>
+                    <Post postDetails={post} />
+                  </li>
+                ))
+              )}
+            </ul>
+          )}
         </div>
       </div>
     </>

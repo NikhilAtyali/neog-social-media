@@ -292,7 +292,9 @@ export const PostProvider = ({ children }) => {
       console.error(e);
     }
   };
-
+  const filterUserPost = (user) => {
+    return postData.posts.filter(({ username }) => username === user);
+  };
   useEffect(() => {
     getData();
   }, []);
@@ -308,6 +310,7 @@ export const PostProvider = ({ children }) => {
         userPosts: postData.userPosts,
         getUserPost,
         createPost,
+        filterUserPost,
         getBookmarkedPost,
         getLikedPost,
         getPostDetails,

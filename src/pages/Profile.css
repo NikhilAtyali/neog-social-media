@@ -73,6 +73,7 @@
   .profile-popularity {
     display: flex;
     padding: 0.5rem;
+    margin: 0rem 1rem;
     justify-content: space-between;
     color: #666;
     font-size: 1.3rem;

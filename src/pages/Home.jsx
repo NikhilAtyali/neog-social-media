@@ -1,5 +1,6 @@
-import { useContext, useState } from "react";
+import { useContext, useState,useEffect } from "react";
 import { Post } from "../component/Post";
+import { ColorRing } from "react-loader-spinner";
 import { PostContext } from "../context/PostContext";
 import "./Home.css";
 import { CreatePost } from "../component/CreatePost";
@@ -8,7 +9,7 @@ export const Home = () => {
   const { userPosts } = useContext(PostContext);
 
   const [filters, setFilters] = useState("");
-
+  const [isLoading, setIsLoading] = useState(true);
   const sortHandler = (order) => {
     if (order === "latest") {
       return (a, b) => new Date(b.createdAt) - new Date(a.createdAt);
@@ -24,6 +25,12 @@ export const Home = () => {
     filteredPost = userPosts.sort(sortHandler("trending"));
   }
   console.log(filteredPost);
+  useEffect(() => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  }, []);
   return (
     <>
       <div className="home-container">
@@ -35,13 +42,29 @@ export const Home = () => {
           <hr />
           <button onClick={() => setFilters("trending")}>Trending</button>
         </div>
-        <ul>
-          {filteredPost?.map((post) => (
-            <li key={post._id}>
-              <Post postDetails={post} />
-            </li>
-          ))}
-        </ul>
+        {isLoading ? (
+          <ColorRing
+            visible={true}
+            height="80"
+            width="80"
+            ariaLabel="blocks-loading"
+            wrapperStyle={{}}
+            wrapperClass="blocks-wrapper"
+            colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
+          />
+        ) : (
+          <ul>
+            {filteredPost.length === 0 ? (
+              <p style={{ marginTop: "2rem" }}>Nothing posted Yet</p>
+            ) : (
+              filteredPost?.map((post) => (
+                <li key={post._id}>
+                  <Post postDetails={post} />
+                </li>
+              ))
+            )}
+          </ul>
+        )}
       </div>
     </>
   );

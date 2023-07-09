@@ -13,7 +13,7 @@ export const Navbar = () => {
       <nav className="nav-container">
         <img
           className="nav-brand-logo"
-          src={require("../images/logo.png")}
+          src={require("../images/Socio.png")}
           alt="hangout logo"
         />
         {/* <input
