@@ -29,6 +29,8 @@
   .suggestion-container ul li button {
     border: none;
     padding: 0.3rem;
+    color: #fff;
+  text-transform: uppercase;
   }
   
   @media screen and (min-width: 768px) {

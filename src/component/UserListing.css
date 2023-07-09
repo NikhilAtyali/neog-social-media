@@ -29,3 +29,9 @@
     font-weight: 600;
     color: #777;
   }
+  .user-listing-btn {
+    padding: 0.3rem;
+    border: none;
+    text-transform: uppercase;
+    color: #fff;
+  }

@@ -3,6 +3,7 @@ import { PostContext } from "../context/PostContext";
 import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 export const CreatePost = () => {
+  const [text, setText] = useState("");
   const { createPost } = useContext(PostContext);
   const inputRef = useRef(null);
   const handleClick = () => {
@@ -22,6 +23,8 @@ export const CreatePost = () => {
           id="postMsg"
           rows={5}
           placeholder="Whats happening?"
+          value={text}	
+          onChange={(e) => setText(e.target.value)}
         ></textarea>
         <div className="home-create-post-actions">
           <section className="create-actions">
@@ -41,6 +44,8 @@ export const CreatePost = () => {
           <button
             type="reset"
             onClick={() => setFileName("")}
+            value={text}	
+            onChange={(e) => setText(e.target.value)}
             id="reset"
             style={{ display: "none" }}
           >
