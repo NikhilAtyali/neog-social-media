@@ -194,7 +194,7 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     getUsersData();
-  }, []);
+  }, [loggedUsername]);
 
   return (
     <UserContext.Provider
@@ -202,6 +202,7 @@ export const UserProvider = ({ children }) => {
         users: usersData.users,
         searchUserDetail,
         toggleFollow,
+        getUsersData,
         shouldFollowEnable,
         unFollowUserHandler,
         isFollowing,

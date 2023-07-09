@@ -1,12 +1,22 @@
 import { Link } from "react-router-dom";
 import Lottie from "lottie-react";
 import signup from "../animation/signup.json";
-import { useContext } from "react";
+import { useContext,useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import "./Signup.css";
 
 export const Signup = () =>{
   const { signupHandler } = useContext(AuthContext);
+  const [showPassword, setShowPassword] = useState(false);
+  const [checkPassword, setCheckPassword] = useState("");
+
+  const passwordMatcher = (e) => {
+    if (e.target.elements.confirm_password.value !== checkPassword) {
+      alert("password not matching");
+      return;
+    }
+    signupHandler(e);
+  };
     return (
         <>
         <div className="signup-container">
@@ -15,7 +25,7 @@ export const Signup = () =>{
           animationData={signup}
           loop={true}
         />
-        <form className="signup-form" onSubmit={(e) => signupHandler(e)}>
+        <form className="signup-form" onSubmit={(e) => passwordMatcher(e)}>
         <img
             className="login-image"
             src={require("../images/logo.png")}
@@ -27,11 +37,13 @@ export const Signup = () =>{
             type="text"
             required
             placeholder="First Name"
+            id="firstname"
           />
           <input
             className="signup-form-input"
             type="text"
             required
+            id="lastname"
             placeholder="Last Name"
           />
           <input
@@ -42,21 +54,28 @@ export const Signup = () =>{
           />
           <input
             className="signup-form-input"
-            type="password"
+            type={showPassword ? "text" : "password"}
+            id="password"
             required
+            onChange={(e) => setCheckPassword(e.target.value)}
             placeholder="Password"
           />
           <input
             className="signup-form-input"
-            type="password"
+            type={showPassword ? "text" : "password"}
             required
+            id="confirm_password"
             placeholder="Confirm Password"
           />
           <label
             className="signup-show-password"
             htmlFor="signup_show_password"
           >
-            <input id="signup_show_password" type="checkbox" />
+           <input
+              id="signup_show_password"
+              type="checkbox"
+              onChange={() => setShowPassword(!showPassword)}
+            />
             Show Password
           </label>
           <button className="signup-btn" type="submit">

@@ -31,3 +31,6 @@
   .edit-profile-username {
     text-transform: capitalize;
   }
+  .edit-profile-filename {
+    color: green;
+  }

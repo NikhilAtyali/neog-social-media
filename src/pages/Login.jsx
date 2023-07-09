@@ -2,11 +2,12 @@ import Lottie from "lottie-react";
 import { Link } from "react-router-dom";
 import login from "../animation/login.json";
 import "./Login.css";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 export const Login = () => {
   const { loginHandler } = useContext(AuthContext);
+  const [showPassword, setShowPassword] = useState(false);
   return (
     <>
       <div className="login-container">
@@ -40,12 +41,16 @@ export const Login = () => {
             className="login-input"
             id="login_password"
             placeholder="password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             required
           />
 
           <label htmlFor="show_password" className="login-show-password">
-            <input type="checkbox" id="show_password" />
+          <input
+              type="checkbox"
+              id="show_password"
+              onChange={() => setShowPassword(!showPassword)}
+            />
             Show Password
           </label>
           <button className="login-btn" type="submit">

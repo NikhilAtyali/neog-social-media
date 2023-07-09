@@ -160,6 +160,10 @@ export const PostProvider = ({ children }) => {
     if (!media) {
       return "";
     }
+    if (Math.floor(media?.size * 0.000001) > 4) {
+      alert("File Size greater than 4mb");
+      return;
+    }
     const mediaData = new FormData();
     mediaData.append("file", media);
     mediaData.append("upload_preset", "hangout");

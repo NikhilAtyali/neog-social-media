@@ -66,6 +66,10 @@
     font-size: 1.1rem;
     color: #680;
   }
+  
+  .profile-user-posts {
+    margin-top: 1rem;
+  }
   .profile-popularity {
     display: flex;
     padding: 0.5rem;

@@ -63,11 +63,30 @@ export const AuthProvider = ({ children }) => {
   };
   const signupHandler = async (event) => {
     event.preventDefault();
+    const requestBody = JSON.stringify({
+      username: event.target.elements.username.value,
+      password: event.target.elements.password.value,
+      firstName: event.target.elements.firstname.value,
+      lastName: event.target.elements.lastname.value,
+      profileImg: "",
+      bannerImg: "",
+      portfolioURL: "",
+      quote: "",
+    });
     try {
-      //   const response = fetch("/api/auth/signup", {
-      //     method: "POST",
-      //     body: {},
-      //   });
+      const response = await fetch("/api/auth/signup", {
+        method: "POST",
+        body: requestBody,
+      });
+      console.log(response);
+      if (response.status === 201) {
+        // const responseData = await response.json();
+        // console.log(responseData);
+        navigate("/login");
+      }
+      if (response.status === 422) {
+        //user already present
+      }
     } catch (e) {
       console.error(e);
     }

@@ -9,6 +9,8 @@ const profileReducer = (prevState, { type, payload }) => {
       return { ...prevState, profileQuote: payload };
     case "UPDATE_URL":
       return { ...prevState, url: payload };
+      case "UPDATE_PROFILE_IMG":
+      return { ...prevState, img: payload };
     default:
       return prevState;
   }
@@ -18,6 +20,7 @@ export const EditProfile = ({ userDetail, close }) => {
   const [profileData, dispatch] = useReducer(profileReducer, {
     profileQuote: userDetail?.quote,
     url: userDetail?.portfolioURL,
+    img: "",
   });
   const { firstName, lastName, username, profileImg } = userDetail;
   const { editProfileHandler } = useContext(UserContext);
