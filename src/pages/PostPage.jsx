@@ -126,14 +126,14 @@ export const PostPage = () => {
             ) : (
               <BookmarkBorderIcon onClick={() => toggleBookmark(_id)} />
             )}
-            <div>
+            {/* <div>
               <ChatBubbleOutlineIcon />
               <span>1</span>
-            </div>
+            </div> */}
             <ShareIcon onClick={() => copyPostUrl(_id)} />
           </section>
         </main>
-        <section>
+        {/* <section>
           <h3>Comments</h3>
           <ul>
             <li>a</li>
@@ -142,7 +142,7 @@ export const PostPage = () => {
             <li>f</li>
             <li>f</li>
           </ul>
-        </section>
+        </section> */}
       </div>
     </>
   );

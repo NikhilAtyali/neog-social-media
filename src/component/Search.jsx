@@ -36,8 +36,9 @@ export const Search = () => {
                 <p>No user found!</p>
               </li>
             ) : (
-              searchedResult.map(({ profileImg, username }) => (
+              searchedResult.map(({ profileImg, username },i) => (
                 <li
+                key={i}
                   onClick={() => {
                     navigate(`/profile/${username}`);
                     setSearchQuery("");

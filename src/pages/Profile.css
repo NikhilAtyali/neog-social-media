@@ -89,3 +89,6 @@
     border: 0.5rem solid #fff;
     border-radius: 50%;
   }
+  .clickable {
+    cursor: pointer;
+  }
