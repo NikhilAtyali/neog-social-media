@@ -1,5 +1,6 @@
 import { createContext, useReducer } from "react";
 import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
 export const AuthContext = createContext();
 
 const authReducer = (prevState, { type, payload }) => {
@@ -52,6 +53,13 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem("token", responseData.encodedToken);
         dispatch({ type: "LOGIN_USER", payload: responseData });
         navigate("/home");
+        toastHandler(`Welcome ${username}`, "success");
+      } else if (response.status === 404) {
+        const responseData = await response.json();
+        toastHandler(responseData.errors[0], "error");
+      } else if (response.status === 401) {
+        const responseData = await response.json();
+        toastHandler(responseData.errors[0], "error");
       }
     } catch (e) {
       console.error(e);
@@ -60,6 +68,7 @@ export const AuthProvider = ({ children }) => {
   const logoutHandler = () => {
     localStorage.removeItem("token");
     dispatch({ type: "LOGOUT_USER", payload: {} });
+    toastHandler("Logout successful", "success");
   };
   const signupHandler = async (event) => {
     event.preventDefault();
@@ -83,9 +92,14 @@ export const AuthProvider = ({ children }) => {
         // const responseData = await response.json();
         // console.log(responseData);
         navigate("/login");
+        toastHandler("Account Created.Please login to continue", "success")
       }
       if (response.status === 422) {
         //user already present
+        toastHandler(
+          "Username already taken please try another username",
+          "error"
+        );
       }
     } catch (e) {
       console.error(e);
@@ -144,6 +158,42 @@ export const AuthProvider = ({ children }) => {
   };
   const isBookmarked = (postId) => {
     return userData?.user?.bookmark?.find((id) => id === postId);
+  };
+  const toastHandler = (msg, type) => {
+    if (type === "success") {
+      toast.success(msg, {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else if (type === "error") {
+      toast.error(msg, {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else {
+      toast(msg, {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
   return (
     <AuthContext.Provider

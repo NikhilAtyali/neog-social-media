@@ -34,7 +34,7 @@ const usersReducer = (prevState, { type, payload }) => {
 
 export const UserProvider = ({ children }) => {
   const [usersData, dispatch] = useReducer(usersReducer, { users: [] });
-  const { updateUserHandler, loggedUsername } = useContext(AuthContext);
+  const { updateUserHandler, loggedUsername, toastHandler } = useContext(AuthContext);
   const { getMediaUploadLink } = useContext(PostContext);
   const getUsersData = async () => {
     try {
@@ -68,6 +68,7 @@ export const UserProvider = ({ children }) => {
             following: responseData.followUser,
           },
         });
+        toastHandler(`Followed ${responseData.followUser.username}`, "success");
         updateUserHandler(responseData.user);
       }
     } catch (e) {
@@ -93,6 +94,10 @@ export const UserProvider = ({ children }) => {
             following: responseData.followUser,
           },
         });
+        toastHandler(
+          `Unfollowed ${responseData.followUser.username}`,
+          "success"
+        );
         updateUserHandler(responseData.user);
       }
     } catch (e) {
@@ -184,6 +189,7 @@ export const UserProvider = ({ children }) => {
         const responseData = await response.json();
         dispatch({ type: "UPDATE_PROFILE", payload: responseData.user });
         updateUserHandler(responseData.user);
+        toastHandler(`Profile Updated`, "success");
         return true;
       }
       return false;

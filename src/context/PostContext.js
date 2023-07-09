@@ -48,7 +48,7 @@ const postReducer = (prevState, { type, payload }) => {
 };
 
 export const PostProvider = ({ children }) => {
-  const { loggedUsername, bookmarked } = useContext(AuthContext);
+  const { loggedUsername, bookmarked, toastHandler } = useContext(AuthContext);
   const [postData, dispatch] = useReducer(postReducer, {
     posts: [],
     userPosts: [],
@@ -193,11 +193,12 @@ export const PostProvider = ({ children }) => {
     const media = e.target.elements.media.files[0];
     const reset = e.target.elements.reset;
     if (postMsg === "" && !media) {
+      toastHandler("Please add something before posting", "error");
       console.log("entered");
       return;
     }
     if (Math.floor(media?.size * 0.000001) > 4) {
-      alert("File Size greater than 4mb");
+      toastHandler("File size should be less than 4mb", "error");
       return;
     }
     const cloudinaryLink = await getMediaUploadLink(media);
@@ -233,6 +234,7 @@ export const PostProvider = ({ children }) => {
           type: "ADD_POST",
           payload: { posts: responseData.posts, user: loggedUsername },
         });
+        toastHandler("Post added successfully", "success");
         reset.click();
       }
     } catch (e) {
@@ -251,6 +253,7 @@ export const PostProvider = ({ children }) => {
       });
       if (response.status === 201) {
         dispatch({ type: "DELETE_POST", payload: postId });
+        toastHandler("Post deleted successfully", "success");
       }
     } catch (e) {
       console.error(e);
@@ -282,6 +285,7 @@ export const PostProvider = ({ children }) => {
 
         const post = responseData.posts.find(({ _id }) => _id === postId);
         dispatch({ type: "EDIT_POST", payload: post });
+        toastHandler("Post edited successfully", "success");
         return true;
       }
     } catch (e) {
