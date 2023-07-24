@@ -29,11 +29,13 @@ export const Explore = () => {
           <p className="text-center">No post to display</p>
         ) : (
           <ul>
-            {posts.map((post) => (
-              <li key={post._id}>
-                <Post postDetails={post} />
-              </li>
-            ))}
+            {posts
+              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+              .map((post) => (
+                <li key={post._id}>
+                  <Post postDetails={post} />
+                </li>
+              ))}
           </ul>
         )}
       </div>

@@ -2,7 +2,7 @@ import { useContext, useRef, useState } from "react";
 import { PostContext } from "../context/PostContext";
 import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
-export const CreatePost = () => {
+export const CreatePost = ({close}) => {
   const [text, setText] = useState("");
   const { createPost } = useContext(PostContext);
   const inputRef = useRef(null);
@@ -15,6 +15,11 @@ export const CreatePost = () => {
       return;
     }
     setFileName(() => e.target.files[0].name);
+  };
+  const modalCloseHandler = () => {
+    if (close) {
+      close();
+    }
   };
   return (
     <>
