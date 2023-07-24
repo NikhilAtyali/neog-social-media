@@ -1,3 +1,40 @@
-.edit-post-container {
-    width: 300px;
-  }
+.create-post-form textarea {
+  resize: none;
+  width: 95%;
+  border: 1px solid #ddd;
+  align-self: center;
+}
+.home-create-post-actions {
+  display: flex;
+  justify-content: space-between;
+  width: 95%;
+  margin: 0 auto;
+  padding: 0.5rem;
+  color: #444;
+}
+.home-create-post-actions section svg {
+  margin-left: 0.5rem;
+  cursor: pointer;
+}
+.create-post-form {
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+}
+.create-actions {
+  display: flex;
+}
+.create-actions p {
+  margin-left: 1rem;
+  margin-right: 1rem;
+  font-weight: 600;
+  display: block;
+  width: 90%;
+  overflow-wrap: break-word;
+}
+.home-create-post-actions button {
+  padding: 0.5rem;
+  border: none;
+  text-transform: uppercase;
+  color: #fff;
+}

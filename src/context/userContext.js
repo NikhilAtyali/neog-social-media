@@ -34,7 +34,6 @@ const usersReducer = (prevState, { type, payload }) => {
 
 export const UserProvider = ({ children }) => {
   const [usersData, dispatch] = useReducer(usersReducer, { users: [] });
-  console.log(usersData);
   const { updateUserHandler, loggedUsername, toastHandler } = useContext(AuthContext);
   const { getMediaUploadLink } = useContext(PostContext);
   const getUsersData = async () => {

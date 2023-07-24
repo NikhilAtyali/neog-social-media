@@ -3,6 +3,7 @@ import { PostContext } from "../../context/PostContext";
 import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import { EmojiCard } from "../emoji-card/EmojiCard";
+import "./CreatePost.css";
 export const CreatePost = ({close}) => {
   const [text, setText] = useState("");
   const { createPost } = useContext(PostContext);

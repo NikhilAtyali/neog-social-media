@@ -28,11 +28,11 @@ export const Explore = () => {
         ) : posts.length === 0 ? (
           <p className="text-center">No post to display</p>
         ) : (
-          <ul>
+          <ul className="post-listing">
             {posts
               .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
               .map((post) => (
-                <li key={post._id}>
+                <li className="post-listing-item" key={post._id}>
                   <Post postDetails={post} />
                 </li>
               ))}

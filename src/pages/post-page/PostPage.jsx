@@ -23,7 +23,7 @@ export const PostPage = () => {
   const { postId } = useParams();
   const { getPostDetails } = useContext(PostContext);
   const postDetails = getPostDetails(postId);
-  const { _id, content, createdAt, likes, username } = postDetails;
+  const { _id, content, createdAt, likes,username, mediaURL } = postDetails;
 
   const { firstName, lastName, profileImg } = searchUserDetail(username);
 
@@ -104,6 +104,25 @@ export const PostPage = () => {
           </section>
           <div>
             <p>{content}</p>
+            {mediaURL?.images?.imageURL === "" ? null : (
+              <img
+                className="post-media"
+                src={mediaURL?.images?.imageURL}
+                alt={username}
+              />
+            )}
+            {mediaURL?.video?.videoURL === "" ? null : (
+              <video controls width="250" className="post-media" autoPlay>
+                <source src={mediaURL?.video?.videoURL} type="video/webm" />
+
+                <source src={mediaURL?.video?.videoURL} type="video/mp4" />
+                <p>
+                  Your browser doesn't support HTML video. Here is a
+                  <a href={mediaURL?.video?.videoURL}>link to the video</a>{" "}
+                  instead.
+                </p>
+              </video>
+            )}
           </div>
           <section className="post-action-container">
             <div>

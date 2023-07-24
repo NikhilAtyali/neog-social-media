@@ -2,7 +2,7 @@
   width: 100%;
   margin-top: 2rem;
 }
-.home-container ul {
+.post-listing {
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -28,9 +28,6 @@
   transition: all 1s ease;
   border-radius: none;
 }
-.home-post-filter button:hover {
-  background-color: rgba(25, 206, 149, 0.26);
-}
 .home-create-post-container {
   width: 95%;
   margin: 1rem auto;
@@ -39,47 +36,8 @@
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
   border-radius: 0.5rem;
 }
-.home-create-post-container textarea {
-  resize: none;
-  width: 95%;
-  border: 1px solid #ddd;
-  align-self: center;
-}
-.home-create-post-actions {
-  display: flex;
-  justify-content: space-between;
-  width: 95%;
-  margin: 0 auto;
-  padding: 0.5rem;
-  color: #444;
-}
-.home-create-post-actions section svg {
-  margin-left: 0.5rem;
-  cursor: pointer;
-}
-.create-post-form {
-  display: flex;
-  flex-direction: column;
-  min-width: 300px;
-}
-.create-actions {
-  display: flex;
-}
-.create-actions p {
-  margin-left: 1rem;
-  margin-right: 1rem;
-  font-weight: 600;
-  display: block;
-  width: 90%;
-  overflow-wrap: break-word;
-}
-.home-create-post-actions button {
-  padding: 0.5rem;
-  border: none;
-  text-transform: uppercase;
-  color: #fff;
-}
-.home-container ul li {
+
+.post-listing-item {
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
   width: 95%;
 }

@@ -13,9 +13,9 @@ export const Liked = () => {
         {posts.length === 0 ? (
           <p className="text-center">No Liked Post</p>
         ) : (
-          <ul>
-            {posts.map((post) => (
-              <li key={post._id}>
+          <ul className="post-listing">
+          {posts.map((post) => (
+            <li className="post-listing-item" key={post._id}>
                 <Post postDetails={post} />
               </li>
             ))}

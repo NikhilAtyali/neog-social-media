@@ -53,12 +53,12 @@ export const Home = () => {
             colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
           />
         ) : (
-          <ul>
+          <ul className="post-listing">
             {filteredPost.length === 0 ? (
               <p style={{ marginTop: "2rem" }}>Nothing posted Yet</p>
             ) : (
               filteredPost?.map((post) => (
-                <li key={post._id}>
+                <li className="post-listing-item" key={post._id}>
                   <Post postDetails={post} />
                 </li>
               ))

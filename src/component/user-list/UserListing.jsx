@@ -1,9 +1,11 @@
 import { useContext } from "react";
 import { UserContext } from "../../context/userContext";
+import { AuthContext } from "../../context/AuthContext";
 import "./UserListing.css";
 
 export const UserListing = ({ users }) => {
   const { isFollowing, toggleFollow } = useContext(UserContext);
+  const { loggedUsername } = useContext(AuthContext);
   return (
     <>
       <div className="user-listing-container">
@@ -18,6 +20,7 @@ export const UserListing = ({ users }) => {
                 <button
                   className="user-listing-btn"
                   onClick={() => toggleFollow(_id)}
+                  style={{ display: loggedUsername === username ? "none" : "" }}
                 >
                   {isFollowing(username) ? "unfollow" : "follow"}
                 </button>

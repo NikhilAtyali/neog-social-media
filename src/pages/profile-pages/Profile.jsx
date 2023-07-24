@@ -41,14 +41,6 @@ export const Profile = () => {
       setIsLoading(false);
     }, 1000);
   }, [username]);
-  useEffect(() => {
-    isOpen && (document.body.style.overflow = "hidden");
-    !isOpen && (document.body.style.overflow = "unset");
-  }, [isOpen]);
-  useEffect(() => {
-    showFollow && (document.body.style.overflow = "hidden");
-    !showFollow && (document.body.style.overflow = "unset");
-  }, [showFollow]);
   const userPosts = filterUserPost(username);
   return (
     <>
@@ -137,14 +129,14 @@ export const Profile = () => {
               colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
             />
           ) : (
-            <ul>
+            <ul className="post-listing">
               {userPosts.length === 0 ? (
                 <p style={{ fontSize: "1.2rem", marginTop: "1rem" }}>
                   Nothing posted yet
                 </p>
               ) : (
                 userPosts?.map((post) => (
-                  <li key={post._id}>
+                  <li className="post-listing-item" key={post._id}>
                     <Post postDetails={post} />
                   </li>
                 ))

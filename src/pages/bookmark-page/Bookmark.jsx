@@ -13,9 +13,9 @@ export const Bookmark = () => {
         {posts.length === 0 ? (
           <p className="text-center">No Bookmarked Post</p>
         ) : (
-          <ul>
+          <ul className="post-listing">
             {posts.map((post) => (
-              <li key={post._id}>
+              <li className="post-listing-item" key={post._id}>
                 <Post postDetails={post} />
               </li>
             ))}

@@ -1,13 +1,23 @@
-@media screen and (min-width: 768px) {
-    .outlet-container {
-      width: 50%;
-      margin-top: 8rem;
-      margin-left: 9rem;
-    }
-  }
-  @media screen and (min-width: 1024px) {
-    .outlet-container {
-      width: 50%;
-      margin: 8rem auto;
-    }
-  }
+.emoji-container {
+  position: absolute;
+  background-color: #fff;
+  padding: 0.5rem;
+  margin-top: 5px;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.3);
+}
+.emoji-container-ul {
+  display: flex;
+  flex-direction: row;
+  width: 200px;
+  overflow-y: auto;
+  justify-content: space-between;
+}
+.emoji-container-ul li {
+  width: auto;
+  padding: 0.2rem;
+  cursor: pointer;
+}
+.emoji-container ul li:hover {
+  background-color: rgba(23, 67, 88, 0.3);
+}
