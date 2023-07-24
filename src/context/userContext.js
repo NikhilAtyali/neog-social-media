@@ -130,8 +130,9 @@ export const UserProvider = ({ children }) => {
     return user.followers.find(({ username }) => username === loggedUsername);
   };
 
-  const getRequestBody = async (profileImg, bannerImg, bio, url) => {
-    const profileImgUrl = await getMediaUploadLink(profileImg);
+  const getRequestBody = async (profileImg, bannerImg, bio, url, avatar) => {
+    const profileImage = await getMediaUploadLink(profileImg);
+    const profileImgUrl = profileImage === "" ? avatar : profileImage;
     const bannerImgUrl = await getMediaUploadLink(bannerImg);
     if (profileImgUrl !== "" && bannerImgUrl !== "") {
       return {
@@ -142,7 +143,7 @@ export const UserProvider = ({ children }) => {
           bannerImg: bannerImgUrl,
         },
       };
-    } else if (profileImgUrl !== "" && bannerImgUrl === "") {
+    } else if (bannerImgUrl === "") {
       return {
         userData: {
           quote: bio,
@@ -150,32 +151,17 @@ export const UserProvider = ({ children }) => {
           profileImg: profileImgUrl,
         },
       };
-    } else if (profileImgUrl === "" && bannerImgUrl !== "") {
-      return {
-        userData: {
-          quote: bio,
-          portfolioURL: url,
-          bannerImg: bannerImgUrl,
-        },
-      };
-    } else {
-      return {
-        userData: {
-          quote: bio,
-          portfolioURL: url,
-        },
-      };
     }
   };
 
-  const editProfileHandler = async (e) => {
+  const editProfileHandler = async (e, avatar) => {
     e.preventDefault();
     const token = localStorage.getItem("token");
     const profileImg = e.target.elements.profileImg.files[0];
     const bannerImg = e.target.elements.bannerImg.files[0];
     const url = e.target.elements.porfileUrl.value;
     const bio = e.target.elements.bio.value;
-    const body = await getRequestBody(profileImg, bannerImg, bio, url);
+    const body = await getRequestBody(profileImg, bannerImg, bio, url, avatar);
 
     const requestBody = JSON.stringify(body);
     try {
