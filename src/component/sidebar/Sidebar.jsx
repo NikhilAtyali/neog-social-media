@@ -6,8 +6,8 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import "./Sidebar.css";
-import { Modal } from "./Modal";
-import { CreatePost } from "./CreatePost";
+import { Modal } from "../modal/Modal";
+import { CreatePost } from "../create-post/CreatePost";
 export const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   useEffect(() => {

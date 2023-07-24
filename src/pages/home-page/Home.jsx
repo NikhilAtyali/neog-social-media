@@ -1,9 +1,9 @@
 import { useContext, useState,useEffect } from "react";
-import { Post } from "../component/Post";
+import { Post } from "../../component/post/Post";
 import { ColorRing } from "react-loader-spinner";
-import { PostContext } from "../context/PostContext";
+import { PostContext } from "../../context/PostContext";
 import "./Home.css";
-import { CreatePost } from "../component/CreatePost";
+import { CreatePost } from "../../component/create-post/CreatePost";
 
 export const Home = () => {
   const { userPosts } = useContext(PostContext);

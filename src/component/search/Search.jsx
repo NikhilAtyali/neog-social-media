@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import "./Search.css";
-import { UserContext } from "../context/userContext";
-import { AuthContext } from "../context/AuthContext";
+import { UserContext } from "../../context/userContext";
+import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router";
 export const Search = () => {
   const { users } = useContext(UserContext);

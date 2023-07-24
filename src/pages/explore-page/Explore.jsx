@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
-import { Post } from "../component/Post";
+import { Post } from "../../component/post/Post"
 import { ColorRing } from "react-loader-spinner";
-import { PostContext } from "../context/PostContext";
+import { PostContext } from "../../context/PostContext";
 export const Explore = () => {
   const { posts } = useContext(PostContext);
   const [isLoading, setIsLoading] = useState(true);

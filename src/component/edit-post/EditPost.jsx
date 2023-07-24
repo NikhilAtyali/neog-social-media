@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { PostContext } from "../context/PostContext";
+import { PostContext } from "../../context/PostContext"
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import "./EditPost.css";
 export const EditPost = ({ postDetails, close }) => {

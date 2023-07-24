@@ -1,17 +1,17 @@
 import { useContext } from "react";
-import { PostContext } from "../context/PostContext";
-import { Post } from "../component/Post";
+import { PostContext } from "../../context/PostContext";
+import { Post } from "../../component/post/Post";
 
-export const Liked = () => {
-  const { getLikedPost } = useContext(PostContext);
-  const posts = getLikedPost();
+export const Bookmark = () => {
+  const { getBookmarkedPost } = useContext(PostContext);
 
+  const posts = getBookmarkedPost();
   return (
     <>
-      <h2 className="text-center">Liked Post</h2>
+      <h2 className="text-center">Bookmarked Post</h2>
       <div className="home-container">
         {posts.length === 0 ? (
-          <p className="text-center">No Liked Post</p>
+          <p className="text-center">No Bookmarked Post</p>
         ) : (
           <ul>
             {posts.map((post) => (

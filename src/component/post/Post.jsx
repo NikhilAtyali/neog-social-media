@@ -6,14 +6,14 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import ShareIcon from "@mui/icons-material/Share";
 import "./Post.css";
-import { Modal } from "./Modal";
+import { Modal } from "../modal/Modal";
 import { useContext, useState } from "react";
-import { PostContext } from "../context/PostContext";
-import { AuthContext } from "../context/AuthContext";
-import { UserContext } from "../context/userContext";
+import { PostContext } from "../../context/PostContext"
+import { AuthContext } from "../../context/AuthContext";
+import { UserContext } from "../../context/userContext";
 import { useNavigate } from "react-router";
 import { Popper } from "@mui/material";
-import { EditPost } from "./EditPost";
+import { EditPost } from "../edit-post/EditPost";
 export const Post = ({ postDetails }) => {
   const { _id, content, createdAt, likes, username, mediaURL } = postDetails;
   const { toggleLikeHandler, isLikedHandler, deletePost } = useContext(PostContext);

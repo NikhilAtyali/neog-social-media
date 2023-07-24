@@ -1,9 +1,9 @@
 import Lottie from "lottie-react";
 import { Link } from "react-router-dom";
-import login from "../animation/login.json";
+import login from "../../animation/login.json";
 import "./Login.css";
 import { useContext, useState } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 
 export const Login = () => {
   const { loginHandler } = useContext(AuthContext);
@@ -24,7 +24,7 @@ export const Login = () => {
         >
           <img
             className="login-image"
-            src={require("../images/logo.png")}
+            src={require("../../images/logo.png")}
             alt="hangout logo"
           />
           <h1 className="login-form-heading">Login</h1>

@@ -1,7 +1,7 @@
 import { useContext, useReducer, useRef, useState } from "react";
 import "./EditProfile.css";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
-import { UserContext } from "../context/userContext";
+import { UserContext } from "../../context/userContext"
 
 const profileReducer = (prevState, { type, payload }) => {
   switch (type) {

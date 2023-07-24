@@ -1,7 +1,7 @@
 import { Outlet } from "react-router";
-import { Navbar } from "./Navbar";
-import { Sidebar } from "./Sidebar";
-import { SuggestionBar } from "./SuggestionBar";
+import { Navbar } from "../navbar/Navbar"
+import { Sidebar } from "../sidebar/Sidebar";
+import { SuggestionBar } from "../suggestion-bar/SuggestionBar";
 import "./Layout.css"
 export const Layout = () => {
   return (

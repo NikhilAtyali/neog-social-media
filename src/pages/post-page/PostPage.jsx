@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { PostContext } from "../context/PostContext";
+import { PostContext } from "../../context/PostContext";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
@@ -8,10 +8,10 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import ShareIcon from "@mui/icons-material/Share";
 import { Popper } from "@mui/material";
-import { Modal } from "../component/Modal";
-import { EditPost } from "../component/EditPost";
-import { AuthContext } from "../context/AuthContext";
-import { UserContext } from "../context/userContext";
+import { Modal } from "../../component/modal/Modal";
+import { EditPost } from "../../component/edit-post/EditPost";
+import { AuthContext } from "../../context/AuthContext";
+import { UserContext } from "../../context/userContext";
 
 export const PostPage = () => {
   const { toggleLikeHandler, isLikedHandler, deletePost } =

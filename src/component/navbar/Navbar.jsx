@@ -1,9 +1,9 @@
 import { useContext } from "react";
 import "./Navbar.css";
-import { Search } from "./Search";
+import { Search } from "../search/Search";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 export const Navbar = () => {
   const { user } = useContext(AuthContext);
   const { username, profileImg } = user;
@@ -13,7 +13,7 @@ export const Navbar = () => {
       <nav className="nav-container">
         <img
           className="nav-brand-logo"
-          src={require("../images/Socio.png")}
+          src={require("../../images/Socio.png")}
           alt="hangout logo"
         />
         {/* <input

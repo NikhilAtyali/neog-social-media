@@ -1,16 +1,16 @@
 import { Routes, Route } from "react-router-dom";
-import { Login } from "./pages/Login"
-import { Home } from "./pages/Home";
-import { Layout } from "./component/Layout";
-import { Signup } from "./pages/Signup";
-import { Explore } from "./pages/Explore";
-import { Bookmark } from "./pages/Bookmark";
-import { Liked } from "./pages/Liked";
-import { PostPage } from "./pages/PostPage";
+import { Login } from "./pages/login-page/Login"
+import { Home } from "./pages/home-page/Home";
+import { Layout } from "./component/layout/Layout";
+import { Signup } from "./pages/signup-page/Signup";
+import { Explore } from "./pages/explore-page/Explore";
+import { Bookmark } from "./pages/bookmark-page/Bookmark"
+import { Liked } from "./pages/liked-page/Liked";
+import { PostPage } from "./pages/post-page/PostPage";
 import { RequireAuth } from "./Auth/RequireAuth"
-import { Profile } from "./pages/Profile";
+import { Profile } from "./pages/profile-pages/Profile";
 import "./App.css";
-import { MockAPI } from "./pages/Mockman";
+import { MockAPI } from "./pages/mockman-pages/Mockman";
 
 function App() {
   return (

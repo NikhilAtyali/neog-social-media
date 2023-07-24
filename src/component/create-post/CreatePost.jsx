@@ -1,7 +1,8 @@
 import { useContext, useRef, useState } from "react";
-import { PostContext } from "../context/PostContext";
+import { PostContext } from "../../context/PostContext";
 import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
+import { EmojiCard } from "../emoji-card/EmojiCard";
 export const CreatePost = ({close}) => {
   const [text, setText] = useState("");
   const { createPost } = useContext(PostContext);
@@ -10,6 +11,7 @@ export const CreatePost = ({close}) => {
     inputRef.current.click();
   };
   const [fileName, setFileName] = useState("");
+  const [showEmoji, setShowEmoji] = useState(false);
   const handleFileChange = (e) => {
     if (e.target.files.length === 0) {
       return;
@@ -43,6 +45,7 @@ export const CreatePost = ({close}) => {
             />
             <InsertPhotoIcon onClick={handleClick} />
             <EmojiEmotionsIcon />
+            <EmojiCard open={showEmoji} value={text} updater={setText} />
             <p>{fileName}</p>
           </section>
           <button type="submit">Post</button>
